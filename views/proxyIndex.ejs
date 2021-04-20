@@ -10,7 +10,7 @@
             <th scope="col">Proxy Name</th>
             <th scope="col">Proxy Instance URL</th>
             <th scope="col">Model</th>
-            <th scope="col">Delete</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@
             <td><%= proxy.apiName %></td>
             <td><a href='https://api-spec-proxy.herokuapp.com/proxies/<%= proxy.id %>/proxy/'>https://api-spec-proxy.herokuapp.com/proxies/<%= proxy.id %>/proxy/</a></td>
             <td><a href="/proxies/<%= proxy.id %>/model">View Model</a></td>
-            <td><button class="btn btn-outline-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+            <td><button class="btn btn-outline-secondary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></button> <button class="btn btn-outline-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
         </tr>
         <% } %>
     </tbody>
