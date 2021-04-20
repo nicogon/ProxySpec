@@ -2,6 +2,8 @@ var bodyParser = require('body-parser');
 const amf = require("amf-client-js");
 const express = require("express");
 const httpProxy = require('http-proxy');
+const models = amf.model.domain;
+amf.AMF.init();
 const proxyStore = require('./proxyStore')
 // Proxy Server
 
@@ -12,7 +14,6 @@ const renderer = new amf.Raml10Renderer();
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
@@ -25,6 +26,8 @@ app.get('/proxies/:id/model', handleGetProxyModel);
 app.get('/', handleMain);
 
 app.get('/uno/dos', handleMain);
+
+
 
 
 function handleMain(req, res) {
@@ -51,6 +54,22 @@ function handleGetProxy(req, res) {
 
 
 function createHTTPProxy(proxy) {
+
+  const api = new models.WebApi()
+    .withName("Wachiturro api")
+    .withVersion("versionPiola");
+
+  const model = new amf.model.document.Document();
+  model.withEncodes(api);
+
+  proxyStore.set(proxyId, {
+    target,
+    name,
+    description,
+    model,
+    api
+  })
+
 
   const apiProxy = httpProxy.createProxyServer({});
 
@@ -83,6 +102,20 @@ function createHTTPProxy(proxy) {
       url,
       method
     } = req;
+
+    // ignore status code 4xx and 5xx
+    if (statusCode < 400) {
+      const endpoint = api.endPoints.find(
+        (endpoint) => endpoint.path.value() == url
+      );
+      // don't reinsert endpoint
+      if (!endpoint) {
+        api
+          .withEndPoint(url)
+          .withOperation(method.toLowerCase())
+          .withResponse(statusCode);
+      }
+    }
   });
 }
 
