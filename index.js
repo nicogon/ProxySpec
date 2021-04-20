@@ -62,15 +62,6 @@ function createHTTPProxy(proxy) {
   const model = new amf.model.document.Document();
   model.withEncodes(api);
 
-  proxyStore.set(proxyId, {
-    target,
-    name,
-    description,
-    model,
-    api
-  })
-
-
   const apiProxy = httpProxy.createProxyServer({});
 
   app.get(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
