@@ -6,8 +6,9 @@ amf.AMF.init();
 function createHTTPProxy(proxy, app) {
     const api = new models.WebApi()
         //TODO: change
-        .withName("Wachiturro api")
-        .withVersion("versionPiola");
+        .withName(proxy.apiName)
+        .withVersion(proxy.apiVersion)
+        .withDescription(proxy.apiDescription);
 
     const model = new amf.model.document.Document();
     model.withEncodes(api);
@@ -54,8 +55,7 @@ function createHTTPProxy(proxy, app) {
                 );
                 // don't reinsert endpoint
                 if (!endpoint) {
-                    api
-                        .withEndPoint(url)
+                    api.withEndPoint(url)
                         .withOperation(method.toLowerCase())
                         .withResponse(statusCode);
                 }

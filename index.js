@@ -55,11 +55,13 @@ function handleGetProxy(req, res) {
 }
 
 async function handleGetProxyModel(req, res) {
+  const proxy = proxyStore.get(req.param("id"));
   const model = proxyStore.get(req.param("id")).model;
   const amfModelRaml = await ramlRenderer.generateString(model);
   const amfModelOas = await oasRenderer.generateString(model);
 
   res.render("model", {
+    proxy,
     amfModelRaml,
     amfModelOas
   })
