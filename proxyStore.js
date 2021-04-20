@@ -11,10 +11,6 @@ class ProxyStore {
         return proxy;
     }
 
-    set(proxyId, proxy) {
-        this.proxyMap.set(proxy.id, proxy);
-    }
-
     get(proxyId) {
         const proxy = this.proxyMap.get(proxyId);
         console.log(`got proxy for id ${proxyId}`, proxy);

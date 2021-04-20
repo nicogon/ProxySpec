@@ -62,35 +62,35 @@ function createHTTPProxy(proxy) {
   const model = new amf.model.document.Document();
   model.withEncodes(api);
 
-  proxyStore.set(proxy.id, {
-    ...proxy,
-    api,
-    model
-  })
+  proxy.api = api;
+  proxy.model = model;
 
   const apiProxy = httpProxy.createProxyServer({});
 
-  app.get(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
-    req.url = req.url.replace(`/proxies/${proxy.id}/proxy`, "");
-    console.log("redirect", req.url, "olis", proxy.apiURL)
-    return apiProxy.web(req, res, {
-      target: proxy.apiURL,
-      changeOrigin: true
-    });
-  });
-
-  apiProxy.on('proxyReq', function (proxyReq, req) {
-    // keep a ref
-    req._proxyReq = proxyReq;
-  });
+  handleNewProxyRoutes(proxy, apiProxy);
+  apiProxy.on("proxyRes", handleProxyResponse(api));
 
   apiProxy.on('error', function (err, req, res) {
     console.log(err)
     res.send(500)
   });
 
-  apiProxy.on("proxyRes", function (proxyRes, req, res) {
-    console.log("proxypass", req.url, proxyRes.statusCode);
+
+}
+
+function handleNewProxyRoutes(proxy, apiProxy) {
+  app.get(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
+    req.url = req.url.replace(`/proxies/${proxy.id}/proxy`, "");
+    return apiProxy.web(req, res, {
+      target: proxy.apiURL,
+      changeOrigin: true
+    });
+  });
+}
+
+function handleProxyResponse(api) {
+  return (proxyRes, req, res) => {
+    console.log("proxypass", req.url, "response: " + proxyRes.statusCode);
     const {
       statusCode,
       status
@@ -113,7 +113,7 @@ function createHTTPProxy(proxy) {
           .withResponse(statusCode);
       }
     }
-  });
+  }
 }
 
 const cocoProxy = proxyStore.create({
