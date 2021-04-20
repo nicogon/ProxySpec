@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
+app.use('/static',express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.get("/proxies/create", handleCreateProxyGet);
 app.post('/proxies/create', handleCreateProxyPost);
