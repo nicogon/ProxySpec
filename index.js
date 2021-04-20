@@ -5,6 +5,7 @@ const {
   createHTTPProxy
 } = require('./proxyHandlers')
 const proxyStore = require('./proxyStore')
+const createAsset = require('./apid')
 
 //
 amf.AMF.init();
@@ -26,7 +27,7 @@ app.get("/proxies/create", handleCreateProxyGet);
 app.post('/proxies/create', handleCreateProxyPost);
 app.get('/proxies/:id', handleGetProxy);
 app.get('/proxies/:id/model', handleGetProxyModel);
-
+app.post('/apid', handleCreateAssetAPID)
 app.get('/', handleMain);
 
 // Main handlers
@@ -64,8 +65,33 @@ async function handleGetProxyModel(req, res) {
   })
 }
 
+function handleCreateAssetAPID(req,res) {
+  const assetProps = { 
+    name: req.body.name || 'nico',
+    description: req.body.description ||'pepe',
+    groupId: req.body.groupId || 'group',
+    assetId: req.body.assetId || 'pepe',
+    version: req.body.version || '1.0.0',
+    classifier: req.body.classifier || 'raml',
+    main: req.body.main || 'pepe.raml',
+    apiVersion: req.body.apiVersion ||'v1'
+  };
+  let content;
+  if (assetProps.classifier === 'raml'){
+    content = req.body.ramlSpec || '';
+    assetProps.main = 'index.raml';
+  } else {
+    content = req.body.oasSpec || '';
+    assetProps.main = 'index.json';
+  }
+  const isFirstVersion = req.body.isFirstVersion || true;
 
-
+  return createAsset({ assetProps, isFirstVersion, content }).then(
+    () => res.sendStatus(200)
+  ).catch(
+    () => res.sendStatus(400)
+  );
+}
 
 // For dummy project
 const cocoProxy = proxyStore.create({

@@ -1,10 +1,14 @@
 const AssetFactory = require('./assetFactory');
 
+const request = require('superagent');
 const assetFactory = new AssetFactory();
 const anypointURI = 'https://qax.anypoint.mulesoft.com';
-const username = process.env.USERNAME;
+const username = process.env.USER;
 const password = process.env.PASSWORD;
 const orgId = process.env.ORG_ID;
+const userId = process.env.USER_ID;
+
+console.log('>>>', username, password, orgId);
 
 async function getToken() {
   const csResponse = await request
@@ -15,12 +19,13 @@ async function getToken() {
   return `${csResponse.body.token_type} ${csResponse.body.access_token}`;
 }
 
-const createAsset = ({ assetProps, content, isFirstVersion}) => {
+const createAsset = async ({ assetProps, content, isFirstVersion}) => {
   try{
     const token = await getToken()
-    await assetFactory.setToken(token);
-    await assetFactory.setOrgid(orgId);
-    await assetFactory.initializeUser();
+    
+    assetFactory.setToken(token);
+    assetFactory.setOrgid(orgId);
+    await assetFactory.setUserId(userId);
     await assetFactory.createAsset({ assetProps, content, isFirstVersion });
   } catch (error) {
     console.log('Error ¯\\_(ツ)_/¯');

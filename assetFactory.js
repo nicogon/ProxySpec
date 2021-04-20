@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const ApiDesignerClient = require('@mulesoft/api-designer-xapi-js-client');
 
 const apiDesignerURL = 'https://qax.anypoint.mulesoft.com/designcenter/api-designer';
@@ -20,12 +21,8 @@ class AssetFactory {
     this.userId = null;
   }
 
-  async initializeUser() {
-    const profileResponse = await exchangeXapi.client.profile.get({}, {
-      headers: { authorization: this.authorization } 
-    });
-
-    this.userId = profileResponse.body.id;
+  setUserId(userId) {
+    this.userId = userId;
   }
 
   setToken(newAuthorization) {
@@ -58,14 +55,14 @@ class AssetFactory {
     }
   
     await apiDesignerClient
-    .projects
-    .projectId({ projectId: assetProps.projectId })
-    .branches
-    .branch({ branch: 'master' })
-    .acquireLock
-    .post({}, { 
-      headers: this.getHeaders()
-    });
+      .projects
+      .projectId({ projectId: assetProps.projectId })
+      .branches
+      .branch({ branch: 'master' })
+      .acquireLock
+      .post({}, { 
+        headers: this.getHeaders()
+      });
   
     await apiDesignerClient
       .projects
@@ -74,7 +71,7 @@ class AssetFactory {
       .branch({ branch: 'master' })
       .save
       .post([{
-        path: "/pinguito.raml",
+        path: `${assetProps.name}.${assetProps.classifier === 'raml'? 'raml': 'json'}`,
         type: "FILE",
         content
       }], { 
