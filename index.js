@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+const amf = require("amf-client-js");
 const express = require("express");
 const httpProxy = require('http-proxy');
 const proxyStore = require('./proxyStore')
@@ -6,7 +7,7 @@ const proxyStore = require('./proxyStore')
 
 const app = express();
 const port = 5000;
-
+const renderer = new amf.Raml10Renderer();
 
 /*
 
@@ -21,6 +22,7 @@ app.listen(port, () => {
 
 app.post('/proxies', handleCreateProxy);
 app.get('/proxies/:id', handleGetProxy);
+app.get('/proxies/:id/model', handleGetProxyModel);
 app.get('/', handleMain);
 
 app.get('/uno/dos', handleMain);
@@ -108,3 +110,8 @@ createProxy({
   target: 'http://all-around.herokuapp.com/all',
   proxyId: 1
 })
+
+async function handleGetProxyModel(req, res) {
+  const amfModel = await renderer.generateString(proxyStore.get(req.param("id")).model);
+  res.render("model", { amfModel })
+}
