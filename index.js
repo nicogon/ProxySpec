@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 const express = require("express");
+const httpProxy = require('http-proxy');
 const proxyStore = require('./proxyStore')
 // Proxy Server
 
@@ -30,11 +31,20 @@ function handleCreateProxy(req, res) {
     description
   } = req.body;
 
-  proxyStore.create({
+
+  const proxyId = proxyStore.create({
     target,
     name,
     description
   });
+
+  model = createProxy({
+    target,
+    name,
+    description,
+    proxyId
+  });
+
 
   res.redirect('/');
 }
@@ -43,3 +53,38 @@ function handleCreateProxy(req, res) {
 function handleGetProxy(req, res) {
   res.send(200, JSON.stringify(proxyStore.get(req.param("id"))))
 }
+
+
+function createProxy({
+  target,
+  name,
+  description,
+  proxyId
+}) {
+
+  const apiProxy = httpProxy.createProxyServer({});
+
+  app.get(`/proxies/${proxyId}/proxy/*`, function (req, res) {
+    //req.url = req.url.replace(`/proxies/${proxyId}/proxy`, "");
+    console.log("redirect",req.url, "olis", target)
+    return apiProxy.web(req, res, {
+      target
+    });
+  });
+
+  apiProxy.on("error", (e)=>console.log(e))
+
+  apiProxy.on("proxyRes", function (proxyRes, req, res) {
+    console.log("proxypass", req.url, proxyRes.statusCode);
+    const {
+      statusCode,
+      status
+    } = proxyRes;
+    const {
+      url,
+      method
+    } = req;
+  });
+}
+
+createProxy({target:'http://all-around.herokuapp.com/all', proxyId:1})
