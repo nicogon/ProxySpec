@@ -1,7 +1,8 @@
 var bodyParser = require('body-parser');
 const amf = require("amf-client-js");
 const express = require("express");
-const httpProxy = require('http-proxy');
+const {createHTTPProxy} = require('./proxyHandlers')
+
 const models = amf.model.domain;
 amf.AMF.init();
 const proxyStore = require('./proxyStore')
@@ -24,7 +25,6 @@ app.post('/proxies/create', handleCreateProxyPost);
 app.get('/proxies/:id', handleGetProxy);
 app.get('/proxies/:id/model', handleGetProxyModel);
 app.get('/', handleMain);
-
 app.get('/uno/dos', handleMain);
 
 
@@ -41,9 +41,8 @@ function handleCreateProxyGet(req, res) {
 function handleCreateProxyPost(req, res) {
   //TODO validate req.body
   const proxy = proxyStore.create(req.body);
-  createHTTPProxy(proxy);
+  createHTTPProxy(proxy, app);
   console.log("proxy created", proxy)
-
   res.redirect(`/proxies/${proxy.id}`);
 }
 
@@ -52,77 +51,13 @@ function handleGetProxy(req, res) {
   res.send(200, JSON.stringify(proxyStore.get(req.param("id"))))
 }
 
-
-function createHTTPProxy(proxy) {
-
-  const api = new models.WebApi()
-    .withName("Wachiturro api")
-    .withVersion("versionPiola");
-
-  const model = new amf.model.document.Document();
-  model.withEncodes(api);
-
-  proxy.api = api;
-  proxy.model = model;
-
-  const apiProxy = httpProxy.createProxyServer({});
-
-  handleNewProxyRoutes(proxy, apiProxy);
-  apiProxy.on("proxyRes", handleProxyResponse(api));
-
-  apiProxy.on('error', function (err, req, res) {
-    console.log(err)
-    res.send(500)
-  });
-
-
-}
-
-function handleNewProxyRoutes(proxy, apiProxy) {
-  app.get(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
-    req.url = req.url.replace(`/proxies/${proxy.id}/proxy`, "");
-    return apiProxy.web(req, res, {
-      target: proxy.apiURL,
-      changeOrigin: true
-    });
-  });
-}
-
-function handleProxyResponse(api) {
-  return (proxyRes, req, res) => {
-    console.log("proxypass", req.url, "response: " + proxyRes.statusCode);
-    const {
-      statusCode,
-      status
-    } = proxyRes;
-    const {
-      url,
-      method
-    } = req;
-
-    // ignore status code 4xx and 5xx
-    if (statusCode < 400) {
-      const endpoint = api.endPoints.find(
-        (endpoint) => endpoint.path.value() == url
-      );
-      // don't reinsert endpoint
-      if (!endpoint) {
-        api
-          .withEndPoint(url)
-          .withOperation(method.toLowerCase())
-          .withResponse(statusCode);
-      }
-    }
-  }
-}
-
 const cocoProxy = proxyStore.create({
   apiName: "all around",
   apiDescription: "la api del coco",
   apiURL: 'http://all-around.herokuapp.com/all',
   apiVersion: "v1"
 });
-createHTTPProxy(cocoProxy);
+createHTTPProxy(cocoProxy, app);
 
 async function handleGetProxyModel(req, res) {
   const amfModel = await renderer.generateString(proxyStore.get(req.param("id")).model);
