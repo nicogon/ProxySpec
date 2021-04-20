@@ -9,13 +9,10 @@ const app = express();
 const port = 5000;
 const renderer = new amf.Raml10Renderer();
 
-/*
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-*/
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
@@ -89,7 +86,8 @@ function createHTTPProxy(proxy) {
   });
 }
 
-createHTTPProxy({id: 999, apiURL:'http://all-around.herokuapp.com/all'})
+const cocoProxy = proxyStore.create({apiName: "all around", apiDescription: "la api del coco", apiURL:'http://all-around.herokuapp.com/all', apiVersion: "v1" });
+createHTTPProxy(cocoProxy);
 
 async function handleGetProxyModel(req, res) {
   const amfModel = await renderer.generateString(proxyStore.get(req.param("id")).model);

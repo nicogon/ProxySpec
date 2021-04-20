@@ -16,8 +16,9 @@ class ProxyStore {
     }
 
     get(proxyId) {
-        console.log(proxyId, this.proxyMap[1])
-        return this.proxyMap.get(proxyId);
+        const proxy = this.proxyMap.get(proxyId);
+        console.log(`got proxy for id ${proxyId}`, proxy);
+        return proxy;
     }
 }
 
