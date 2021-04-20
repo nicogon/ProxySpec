@@ -20,13 +20,16 @@
 </script>
 <form form method="post" action="/apid">
   <label for="specs">Choose a spec:</label>
-  <select id="specs-selector" onchange="changeOption()">
+  <select class="form-control" id="specs-selector" onchange="changeOption()">
     <option id="raml-spec" value="raml">RAML</option>
     <option id="oas-spec" value="oas">OAS</option>
   </select>
-  <br /><br />
-  <h4>Api Spec preview</h4>
+  <br>
+
+  <label for="specs">Preview api spec:</label>
+  <div class="form-group">
   <textarea
+    class="form-control"
     id="ramlTextArea"
     name="ramlSpec"
     style="width: 100%; height: 400px; display: block"
@@ -34,12 +37,13 @@
 <%= amfModelRaml %></textarea
   >
   <textarea
+    class="form-control"
     id="oasTextArea"
     name="oasSpec"
     style="width: 100%; height: 400px; display: none"
   >
 <%= amfModelOas %></textarea
-  >
+  > </div>
   <input type="hidden" name="name" value="<%= proxy.apiName %>"/>
   <input type="hidden" name="description" value="<%= proxy.apiDescription %>" />
   <input type="hidden" name="groupId" value="<%= process.env.ORG_ID || 'test'%>" />
