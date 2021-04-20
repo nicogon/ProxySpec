@@ -1,10 +1,10 @@
+<%- include('header.ejs') %>
 
-Barra
+<h2 class="float-left">Active Proxies</h2>
+<a class="btn btn-lg btn-primary float-right" href="/proxies/create">Create Proxy</a>
 
-<a href="/proxies/create">Create Proxy</a>
-
-<table>
-    <caption>Active Proxies</caption>
+<br><br><br>
+<table class="table">
     <thead>
         <tr>
             <th scope="col">Proxy Name</th>
@@ -14,13 +14,13 @@ Barra
     </thead>
     <tbody>
         <% for (proxy of proxies){ %>
-            <tr>
-                <td><%= proxy.apiName %></th>
-                <td><a href="/proxies/<%= proxy.id %>/model">View Model</a></td>
-                <td>x</td>
-            </tr>
+        <tr>
+            <td><%= proxy.apiName %></th>
+            <td><a href="/proxies/<%= proxy.id %>/model">View Model</a></td>
+            <td>x</td>
+        </tr>
         <% } %>
     </tbody>
 </table>
 
-
+<%- include('footer.ejs') %>)
