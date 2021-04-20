@@ -67,19 +67,19 @@ async function handleGetProxyModel(req, res) {
   })
 }
 
-function handleCreateAssetAPID(req,res) {
-  const assetProps = { 
+function handleCreateAssetAPID(req, res) {
+  const assetProps = {
     name: req.body.name || 'nico',
-    description: req.body.description ||'pepe',
+    description: req.body.description || 'pepe',
     groupId: req.body.groupId || 'group',
     assetId: req.body.assetId || 'pepe',
     version: req.body.version || '1.0.0',
     classifier: req.body.classifier || 'raml',
     main: req.body.main || 'pepe.raml',
-    apiVersion: req.body.apiVersion ||'v1'
+    apiVersion: req.body.apiVersion || 'v1'
   };
   let content;
-  if (assetProps.classifier === 'raml'){
+  if (assetProps.classifier === 'raml') {
     content = req.body.ramlSpec || '';
     assetProps.main = 'index.raml';
   } else {
@@ -88,8 +88,12 @@ function handleCreateAssetAPID(req,res) {
   }
   const isFirstVersion = req.body.isFirstVersion || true;
 
-  return createAsset({ assetProps, isFirstVersion, content }).then(
-    () => res.sendStatus(200)
+  return createAsset({
+    assetProps,
+    isFirstVersion,
+    content
+  }).then(
+    (projectId) => res.redirect(`https://qax.anypoint.mulesoft.com/designcenter/designer/#/project/${projectId}`)
   ).catch(
     () => res.sendStatus(400)
   );
@@ -97,7 +101,7 @@ function handleCreateAssetAPID(req,res) {
 
 // For dummy project
 const cocoProxy = proxyStore.create({
-  apiName: "all around",
+  apiName: "proxy-api-" + Math.random().toString(36).slice(-6),
   apiDescription: "la api del coco",
   apiURL: 'http://all-around.herokuapp.com/all',
   apiVersion: "v1"

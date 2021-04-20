@@ -20,17 +20,19 @@ async function getToken() {
 }
 
 const createAsset = async ({ assetProps, content, isFirstVersion}) => {
+  let projectId;
   try{
     const token = await getToken()
     
     assetFactory.setToken(token);
     assetFactory.setOrgid(orgId);
     await assetFactory.setUserId(userId);
-    await assetFactory.createAsset({ assetProps, content, isFirstVersion });
+    projectId = await assetFactory.createAsset({ assetProps, content, isFirstVersion });
   } catch (error) {
     console.log('Error ¯\\_(ツ)_/¯');
     console.log(error);
   }
+  return projectId;
 }
 
 module.exports = createAsset;

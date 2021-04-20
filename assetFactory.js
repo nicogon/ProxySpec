@@ -70,12 +70,14 @@ class AssetFactory {
       .branch({ branch: 'master' })
       .save
       .post([{
-        path: `${assetProps.name}.${assetProps.classifier === 'raml'? 'raml': 'json'}`,
+        path: `${assetProps.assetId}.${assetProps.classifier === 'raml'? 'raml': 'json'}`,
         type: "FILE",
         content
       }], { 
         headers: this.getHeaders()
       });
+
+    return assetProps.projectId;
   }
 }
 
