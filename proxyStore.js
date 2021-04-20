@@ -1,21 +1,22 @@
 class ProxyStore {
     constructor() {
-        this.proxyMap = new Map();
+        this.proxyMap = [];
         this.nextId = 1;
     }
 
     create(proxy) {
-        this.proxyMap.set(this.nextId, proxy);
+        this.proxyMap[this.nextId]  = proxy;
         this.nextId = this.nextId + 1;
         return this.nextId - 1;
     }
 
     set(proxyId, proxy) {
-        this.proxyMap.set(proxyId, proxy);
+        this.proxyMap[proxyId] = proxy;
     }
 
     get(proxyId) {
-        this.proxyMap.get(proxyId);
+        console.log(proxyId,this.proxyMap[1])
+        return this.proxyMap[proxyId];
     }
 }
 
