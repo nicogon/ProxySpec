@@ -1,0 +1,26 @@
+
+Barra
+
+<a href="/proxies/create">Create Proxy</a>
+
+<table>
+    <caption>Active Proxies</caption>
+    <thead>
+        <tr>
+            <th scope="col">Proxy Name</th>
+            <th scope="col">Model</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (proxy of proxies){ %>
+            <tr>
+                <td><%= proxy.apiName %></th>
+                <td><a href="/proxies/<%= proxy.id %>/model">View Model</a></td>
+                <td>x</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+
