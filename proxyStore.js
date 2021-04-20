@@ -15,7 +15,7 @@ class ProxyStore {
     }
 
     get(proxyId) {
-        console.log(proxyId,this.proxyMap[1])
+        //console.log(proxyId,this.proxyMap[1])
         return this.proxyMap[proxyId];
     }
 }
