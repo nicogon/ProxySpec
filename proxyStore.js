@@ -12,7 +12,7 @@ class ProxyStore {
     }
 
     set(proxyId, proxy) {
-        this.proxyMap[proxyId] = proxy;
+        this.proxyMap.set(proxy.id, proxy);
     }
 
     get(proxyId) {

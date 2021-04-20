@@ -62,6 +62,12 @@ function createHTTPProxy(proxy) {
   const model = new amf.model.document.Document();
   model.withEncodes(api);
 
+  proxyStore.set(proxy.id, {
+    ...proxy,
+    api,
+    model
+  })
+
   const apiProxy = httpProxy.createProxyServer({});
 
   app.get(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
@@ -110,10 +116,17 @@ function createHTTPProxy(proxy) {
   });
 }
 
-const cocoProxy = proxyStore.create({apiName: "all around", apiDescription: "la api del coco", apiURL:'http://all-around.herokuapp.com/all', apiVersion: "v1" });
+const cocoProxy = proxyStore.create({
+  apiName: "all around",
+  apiDescription: "la api del coco",
+  apiURL: 'http://all-around.herokuapp.com/all',
+  apiVersion: "v1"
+});
 createHTTPProxy(cocoProxy);
 
 async function handleGetProxyModel(req, res) {
   const amfModel = await renderer.generateString(proxyStore.get(req.param("id")).model);
-  res.render("model", { amfModel })
+  res.render("model", {
+    amfModel
+  })
 }
