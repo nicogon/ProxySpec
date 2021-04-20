@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mulesoft/api-designer-xapi-js-client": "^2.0.0",
     "amf-client-js": "^4.7.2",
     "body-parser": "^1.19.0",
     "ejs": "^3.1.6",
@@ -18,7 +17,12 @@
     "form-data": "^4.0.0",
     "http-proxy": "^1.18.1",
     "node-fetch": "^2.6.1",
+    "query-string": "^5.0.0",
+    "request": "^2.34.0",
+    "request-promise": "^4.2.2",
+    "setprototypeof": "^1.0.1",
     "string-to-stream": "^3.0.1",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "xtend": "^4.0.1"
   }
 }

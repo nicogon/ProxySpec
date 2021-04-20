@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-const ApiDesignerClient = require('@mulesoft/api-designer-xapi-js-client');
+const ApiDesignerClient = require('./apid-client');
 
 const apiDesignerURL = 'https://qax.anypoint.mulesoft.com/designcenter/api-designer';
 const apiDesignerClient = new ApiDesignerClient({ baseUri: apiDesignerURL });
