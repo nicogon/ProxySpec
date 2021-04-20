@@ -34,7 +34,7 @@ function createHTTPProxy(proxy, app) {
                 changeOrigin: true
             });
         });
-        app.x(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
+        app.post(`/proxies/${proxy.id}/proxy/**`, function (req, res) {
             req.url = req.url.replace(`/proxies/${proxy.id}/proxy`, "");
             return apiProxy.web(req, res, {
                 target: proxy.apiURL,
