@@ -11,7 +11,7 @@ amf.AMF.init();
 
 // Server setup
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 const ramlRenderer = new amf.Raml10Renderer();
 const oasRenderer = new amf.Oas20Renderer();
 
