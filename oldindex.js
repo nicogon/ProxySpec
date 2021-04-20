@@ -109,17 +109,5 @@ apiProxy.on("proxyRes", function (proxyRes, req, res) {
   const { statusCode, status } = proxyRes;
   const { url, method } = req;
 
-  // ignore status code 4xx and 5xx
-  if (statusCode < 400) {
-    const endpoint = api.endPoints.find(
-      (endpoint) => endpoint.path.value() == url
-    );
-    // don't reinsert endpoint
-    if (!endpoint) {
-      api
-        .withEndPoint(url)
-        .withOperation(method.toLowerCase())
-        .withResponse(statusCode);
-    }
-  }
+
 });
