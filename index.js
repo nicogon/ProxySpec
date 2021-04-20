@@ -9,6 +9,7 @@ const fs = require('fs');
 const fetch = require("node-fetch");
 
 var streamer = require('string-to-stream')
+const proxyStore = require('./proxyStore');
 
 amf.AMF.init();
 
@@ -55,7 +56,18 @@ app2.use(bodyParser.urlencoded({ extended: true }));
 
 
 app2.listen(port2, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port2}`);
+});
+
+app2.get("/proxies/create", (req, res) => {
+  res.render("proxyCreate", {});
+});
+
+app2.post("/proxies/create", (req, res) => {
+  //TODO validate req.body
+  const proxy = proxyStore.create(req.body);
+  console.log("proxy created", proxy)
+  res.redirect(`proxies/${proxy.id}`);
 });
 
 app2.get("/proxy/*", function (req, res) {

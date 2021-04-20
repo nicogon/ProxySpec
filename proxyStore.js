@@ -5,8 +5,10 @@ class ProxyStore {
     }
 
     create(proxy) {
-        this.proxyMap.set(this.nextId, proxy);
+        proxy.id = this.nextId;
+        this.proxyMap.set(proxy.id, proxy);
         this.nextId = this.nextId + 1;
+        return proxy;
     }
 
     set(proxyId, proxy) {
@@ -14,7 +16,7 @@ class ProxyStore {
     }
 
     get(proxyId) {
-        this.proxyMap.get(proxyId);
+        return this.proxyMap.get(proxyId);
     }
 }
 
