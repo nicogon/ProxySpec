@@ -8,6 +8,7 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col">Proxy Name</th>
+            <th scope="col">Proxy Instance URL</th>
             <th scope="col">Model</th>
             <th scope="col">Delete</th>
         </tr>
@@ -15,7 +16,8 @@
     <tbody>
         <% for (proxy of proxies){ %>
         <tr>
-            <td><%= proxy.apiName %></th>
+            <td><%= proxy.apiName %></td>
+            <td><a href='https://api-spec-proxy.herokuapp.com/proxies/<%= proxy.id %>/proxy/'>https://api-spec-proxy.herokuapp.com/proxies/<%= proxy.id %>/proxy/</a></td>
             <td><a href="/proxies/<%= proxy.id %>/model">View Model</a></td>
             <td><button class="btn btn-outline-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
         </tr>
@@ -24,3 +26,5 @@
 </table>
 
 <%- include('footer.ejs') %>)
+
+
