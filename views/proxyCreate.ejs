@@ -1,24 +1,31 @@
 
 <%- include('header.ejs') %>
 
+
+<h2>Configure your proxy</h2>
 <form method="POST" action="/proxies/create">
-    <fieldset>
-        <legend>Configure your proxy</legend>
 
-        <label for="apiName">API Name</label>
-        <input name="apiName" id="apiName">
+    <div class="form-group">
+        <label for="exampleInputEmail1">API Name</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apiName">
+    </div>
 
-        <label for="apiDescription">API Description</label>
-        <input name="apiDescription" id="apiDescription">
+    <div class="form-group">
+        <label for="exampleInputEmail1">API Description</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apiDescription">
+    </div>
 
-        <label for="apiURL">API URL</label>
-        <input name="apiURL" id="apiURL">
+    <div class="form-group">
+        <label for="exampleInputEmail1">API Version</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apiVersion">
+    </div>
 
-        <label for="apiVersion">API Version</label>
-        <input name="apiVersion" id="apiVersion">
-    </fieldset>
+    <div class="form-group">
+        <label for="exampleInputEmail1">API URL</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apiURL">
+    </div>
 
-    <button type="submit">Create proxy</button>
-</form>
+    <button type="submit" class="btn btn-primary">Create proxy</button>
+  </form>
 
 <%- include('footer.ejs') %>)
