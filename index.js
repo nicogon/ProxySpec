@@ -7,6 +7,7 @@ const httpProxy = require("http-proxy");
 const express = require("express");
 const fs = require('fs');
 const fetch = require("node-fetch");
+const createAsset = require("./apid");
 
 var streamer = require('string-to-stream')
 
@@ -97,6 +98,27 @@ fetch(
   .catch((error) => console.log('err'));
 
 
+})
+
+app2.post('/apid', (req,res)=>{
+  const assetProps = { 
+    name: "nico",
+    description: 'pepe',
+    groupId: 'group',
+    assetId: 'pepe',
+    version: '1.0.0',
+    classifier: 'raml',
+    main: 'pepe.raml',
+    apiVersion: 'v1'
+  };
+  const content = req.body.spec || '';
+  const isFirstVersion = req.body.isFirstVersion || true;
+
+  return createAsset({ assetProps, isFirstVersion, content }).then(
+    () => res.send(200)
+  ).catch(
+    () => res.send(400)
+  );
 })
 
 app2.set("view engine", "ejs");
