@@ -16,6 +16,12 @@ class ProxyStore {
         console.log(`got proxy for id ${proxyId}`, proxy);
         return proxy;
     }
+
+    getAll() {
+        const array = [...this.proxyMap].map(([_, obj]) => obj);
+        console.log(array)
+        return array
+    }
 }
 
 

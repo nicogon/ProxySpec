@@ -1,7 +1,9 @@
 var bodyParser = require('body-parser');
 const amf = require("amf-client-js");
 const express = require("express");
-const {createHTTPProxy} = require('./proxyHandlers')
+const {
+  createHTTPProxy
+} = require('./proxyHandlers')
 const proxyStore = require('./proxyStore')
 
 //
@@ -27,12 +29,13 @@ app.get('/', handleMain);
 app.get('/uno/dos', handleMain);
 
 
-
-
 // Main handlers
 
 function handleMain(req, res) {
-  res.send(200, "main");
+  console.log(proxyStore.getAll())
+  res.render("proxyIndex", {
+    proxies: proxyStore.getAll()
+  });
 }
 
 function handleCreateProxyGet(req, res) {
