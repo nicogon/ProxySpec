@@ -26,8 +26,6 @@ app.post('/proxies/create', handleCreateProxyPost);
 app.get('/proxies/:id', handleGetProxy);
 app.get('/proxies/:id/model', handleGetProxyModel);
 app.get('/', handleMain);
-app.get('/uno/dos', handleMain);
-
 
 // Main handlers
 
@@ -46,8 +44,7 @@ function handleCreateProxyPost(req, res) {
   //TODO validate req.body
   const proxy = proxyStore.create(req.body);
   createHTTPProxy(proxy, app);
-  console.log("proxy created", proxy)
-  res.redirect(`/proxies/${proxy.id}`);
+  res.redirect(`/`);
 }
 
 function handleGetProxy(req, res) {
