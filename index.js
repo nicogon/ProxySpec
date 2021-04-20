@@ -10,7 +10,8 @@ amf.AMF.init();
 // Server setup
 const app = express();
 const port = 5000;
-const renderer = new amf.Raml10Renderer();
+const ramlRenderer = new amf.Raml10Renderer();
+const oasRenderer = new amf.Oas20Renderer();
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -52,9 +53,12 @@ function handleGetProxy(req, res) {
 }
 
 async function handleGetProxyModel(req, res) {
-  const amfModel = await renderer.generateString(proxyStore.get(req.param("id")).model);
+  const amfModelRaml = await ramlRenderer.generateString(proxyStore.get(req.param("id")).model);
+  const amfModelOas = await oasRenderer.generateString(proxyStore.get(req.param("id")).model);
+
   res.render("model", {
-    amfModel
+    amfModelRaml,
+    amfModelOas
   })
 }
 
