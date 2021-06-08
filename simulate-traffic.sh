@@ -8,4 +8,7 @@ echo "POST /create to the proxy"
 curl -i -s --header "Content-Type: application/json"  --data '{"name":"test","salary":"123","age":"23"}' -X POST https://api-spec-proxy.herokuapp.com/proxies/2/proxy/create | head -n 1|cut -d$' ' -f2
 
 
+
+
+# test
 #Use this api http://dummy.restapiexample.com/api/v1
